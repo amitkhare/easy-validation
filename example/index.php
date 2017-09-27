@@ -17,7 +17,7 @@ ini_set('display_errors', 1);
     //$v = new EasyValidation($host,$username,$password,$dbname); // instantiate EasyValidation With Database features;
     $v->setSource($_GET); // set data source array;
     
-    $v->setLocale("hi-IN"); // set data source array;
+    $v->setLocale("hi-IN",__DIR__."/../src/locales/"); 
     
     $v->check("mobile","required|numeric|min:10|max:15");
     $v->check("username","required|min:4|max:20");

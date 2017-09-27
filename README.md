@@ -32,6 +32,8 @@ $v = new EasyValidation($host,$username,$password,$dbname); // instantiate EasyV
 
 $v->setSource($_POST); // set data source array;
 
+$v->setLocale("en-IN","PATH/TO/LOCALES/DIRECTORY/"); 
+    
 $v->check("mobile","required|numeric|min:10|max:15");
 $v->check("username","required|alphanum|unique:users.username|min:4|max:20");
 $v->check("email","required|email|unique:users.email|min:4|max:100");
