@@ -43,11 +43,11 @@ if(!$v->isValid()){
 }
 ```
 ## Available Methods:
-    > $v->set_source(array["FIELD"=>"VALUE"]);
+    > $v->setSource(array["FIELD"=>"VALUE"]);
     > $v->check("FIELD","RULES");
     > $v->match("FIELD1","FIELD2","RULES");
-    > $v->isValid();
-    > $v->getStatus();
+    > $v->isValid();  // returns true/false
+    > $v->getStatus(); // get error messages
 
 ## Available Rules:
     > required
