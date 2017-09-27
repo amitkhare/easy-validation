@@ -1,0 +1,20 @@
+{
+    "name": "amitkhare/easy-validation",
+    "description": "Easy Validation is an easy and simple PHP validation library",
+    "homepage": "http://github.com/amitkhare/easy-validation",
+    "license": "MIT",
+    "autoload":{
+        "psr-4":{
+            "AmitKhare\\":"src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Amit Kumar Khare",
+            "email": "me.amitkhare@gmail.com"
+        }
+    ],
+
+    "minimum-stability": "stable",
+    "require": {}
+}
