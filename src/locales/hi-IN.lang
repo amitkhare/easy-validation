@@ -1,10 +1,10 @@
 {
 
-"FIELDS_DONT_MATCH" : "The `%s` dont match with `%s`.",
-"FIELD_REQUIRED" : "The `%s` is required.",
+"FIELDS_DONT_MATCH" : "`%s` और `%s` एक-दूसरे से मेल नहीं खाते.",
+"FIELD_REQUIRED" : "`%s` ज़रूरी है.",
 "FIELD_NOT_SET" : " `%s` फील्ड खली है.",
-"FIELD_INVALID_IPV4": "The `%s` field is an invalid IPv4.",
-"FIELD_INVALID_IPV6": "The `%s` field is an invalid IPv6.",
+"FIELD_INVALID_IPV4": "`%s` फील्ड गलत IPv4 एड्रेस है.",
+"FIELD_INVALID_IPV6": "`%s` फील्ड गलत IPv6 एड्रेस है.",
 "FIELD_INVALID_FLOAT" : "The `%s` field is an invalid float.",
 "FIELD_INVALID_STRING" : "The `%s` field is an invalid .",
 "FIELD_INVALID_ALPHA" : "The `%s` field is an invalid alphabetical value.",
@@ -17,6 +17,15 @@
 "FIELD_VALUE_ALREADY_EXISTS" : "The `%s` field value already exists in database.",
 "DB_NOT_CONNECTED" : "Database not connected. Database related rules will be unavailable. Can not apply `unique.%s` rule.",
 "FIELD_VALUE_TOO_LONG" : "The `%s` field value is too long, it should not more than `%s` characters.",
-"FIELD_VALUE_TOO_SHORT" : "The `%s` field value is too short, it should be at least `%s` characters long."
+"FIELD_VALUE_TOO_SHORT" : "The `%s` field value is too short, it should be at least `%s` characters long.",
+
+"USERNAME":"यूजरनेम",
+"FIRSTNAME":"प्रथम नाम",
+"LASTNAME":"उप नाम",
+"MIDDLENAME":"मध्य नाम",
+"EMAIL":"ईमेल",
+"PASSWORD":"पासवर्ड",
+"MOBILE":"मोबाइल",
+"PASSWORD_CONFIRM":"पासवर्ड कन्फर्म"
 
 }

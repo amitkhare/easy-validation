@@ -99,8 +99,9 @@ class Translator {
         return $string;
     }
     
-    private static function formatField($field){
-        return self::formatString($field);
+    private static function formatField($field) {
+        $field = strtoupper($field);
+        return self::getString($field);
     }
      
 }

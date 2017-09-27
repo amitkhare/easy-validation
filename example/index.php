@@ -21,9 +21,9 @@ ini_set('display_errors', 1);
     
     $v->check("mobile","required|numeric|min:10|max:15");
     $v->check("username","required|min:4|max:20");
-    //$v->check("email","required|email|unique:users.email|min:4|max:100");
+    $v->check("email","required|email|unique:users.email|min:4|max:100");
     
-    //$v->match("password","password_confirm");
+    $v->match("password","password_confirm");
     
     if(!$v->isValid()){
     	dd($v->getStatus());
