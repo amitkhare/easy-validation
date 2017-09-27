@@ -58,37 +58,37 @@ class Translator {
     
     private static function getString($keyString){
         
-       $file = self::$localePath.self::$locale.".lang";
-       
-       if(file_exists($file)){
+        if(!$val = self::getVal(self::$localePath.self::$locale.".lang",$keyString)){
+
+            // search locale in internal directory
+            if(!$val = self::getVal(__DIR__."/locales/".self::$locale.".lang",$keyString)){
+                
+                // search default locale in internal directory
+                if(!$val = self::getVal(__DIR__."/locales/en-IN.lang",$keyString)){
+                    
+                    // noting found return formatted keystring
+                    return self::formatString($keyString);
+                    
+                }
+                
+            }
+            
+        }
+        // return fromatted found value;
+        return $val;
+
+    }
+    
+    private static function getVal($file,$keyString){
+        if(file_exists($file)){
            
            $file = file_get_contents($file);
            $file = json_decode($file,true);
            
-       } else {
-           // fallback search in internal language
-           $file = __DIR__."/locales/".self::$locale.".lang";
-       
-           if(file_exists($file)){
-               $file = file_get_contents($file);
-               $file = json_decode($file,true);
-           } else {
-               // fallback search in default language
-               $file = __DIR__."/locales/en-IN.lang";
-       
-               if(file_exists($file)){
-                   $file = file_get_contents($file);
-                   $file = json_decode($file,true);
-               }
-           }
-           
-       }
-        
-        if(array_key_exists($keyString,$file)){
-            return $file[$keyString];
+           if(array_key_exists($keyString,$file)){
+                return $file[$keyString];
+            }
         }
-        
-        return self::formatString($keyString);
     }
     
     private static function formatString($string){
