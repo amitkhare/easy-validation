@@ -44,6 +44,7 @@ if(!$v->isValid()){
 ```
 ## Available Methods:
     > $v->setSource(array["FIELD"=>"VALUE"]);
+    > $v->setLocale("en-IN",PATH); // Path is optional
     > $v->check("FIELD","RULES");
     > $v->match("FIELD1","FIELD2","RULES");
     > $v->isValid();  // returns true/false

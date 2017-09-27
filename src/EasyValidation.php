@@ -23,6 +23,9 @@
  * @link https://github.com/amitkhare/easy-validation
  * @author Amit Kumar Khare <me.amitkhare@gmail.com>
  */
+ 
+use AmitKhare\Translator;
+
 class EasyValidation {
 	private $code;
 	private $msgs;
@@ -31,6 +34,8 @@ class EasyValidation {
     private $uniqueArray;
     private $dbConn;
     private $isConnected=false;
+    private $locale = "en-IN";
+	private $localePath = __DIR__."/locales/";
 	function __construct($host=false,$username=false,$password=false,$dbname=false){
 		$this->msgs = false;
 		$this->code = 200;
@@ -38,7 +43,15 @@ class EasyValidation {
             $this->connect($host,$username,$password,$dbname);
         }
 	}
-	public function setSource($source){
+	
+	public function setLocale($locale,$localePath=null){
+        $this->locale = $locale;
+        if($localePath){
+            $this->localePath = $localePath;
+        }
+    }
+    
+    public function setSource($source){
         $this->source = $source;
     }
     private function sanitizeField($field){
@@ -60,15 +73,24 @@ class EasyValidation {
             $this->isConnected=true;
         }
     }
-    public function match($field1="",$field2="",$rules=null){
+	private function translate($keyString,$fields=null){
+	    return Translator::translate($keyString,$fields,$this->locale,$this->localePath);
+	}
+    public function match($field1="",$field2="",$rules=[]){
         
         if($rules){
             $this->check($field1,$rules);
             $this->check($field2,$rules);
         }
         
+        if(!$this->is_set($field1) || !$this->is_set($field2)){
+           return false;
+        }
+        
         if($this->source[$field1] != $this->source[$field2]){
-            $this->setStatus(500,sprintf("The `%s` field doesn't match with `%s`.", str_replace("_"," ",ucfirst($field1)),str_replace("_"," ",ucfirst($field2))));
+            $string = "The `%s` field doesn't match with `%s`.";
+            $status = $this->translate("FIELDS_DONT_MATCH",[$field1,$field2]);
+            $this->setStatus(500,$status);
         }
         
     }
@@ -106,13 +128,13 @@ class EasyValidation {
 	private function minMax($field,$min=0,$max=0){
 	    if ($max>0 && $max>=$min){
             if(strlen($this->source[$field]) > $max) {
-                $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is too long, it should not more than '.$max.' characters.');
+                $this->setStatus(500, $this->translate("FIELD_VALUE_TOO_LONG",[$field,$max]));
                 $this->sanitizeString($field);
             }
         }
         if ($min>0 && $min <= $max){
             if(strlen($this->source[$field]) < $min) {
-                $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is too short, it should be at least '.$min.' characters long.');
+                $this->setStatus(500, $this->translate("FIELD_VALUE_TOO_SHORT",[$field,$min]));
                 $this->sanitizeString($field);
             }
         }
@@ -195,35 +217,35 @@ class EasyValidation {
         if(isset($this->source[$field])){
             return true;
         }else {
-            $this->setStatus(500,sprintf("The `%s` field is not set.", str_replace("_"," ",ucfirst($field)) ));
+            $this->setStatus(500, $this->translate("FIELD_NOT_SET",$field));
         }
     }
     private function required($field){
         if(!isset($this->source[$field])){
-            $this->setStatus(500,sprintf("The `%s` field is not set.", str_replace("_"," ",ucfirst($field))));
+            $this->setStatus(500, $this->translate("FIELD_NOT_SET",$field));
         } elseif(empty($this->source[$field]) || $this->source[$field]=="" || strlen($this->source[$field]) == 0){
-            $this->setStatus(500,sprintf("The `%s` field is required.", str_replace("_"," ",ucfirst($field))));
+            $this->setStatus(500, $this->translate("FIELD_REQUIRED",$field));
         }
     }
     private function validateIpv4($field) {
         if(filter_var($this->source[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE) {
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is not a valid IPv4');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_IPV4",$field));
         }
     }
     public function validateIpv6($field) {
         if(filter_var($this->source[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === FALSE) {
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is not a valid IPv6');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_IPV6",$field));
         }
     }
     private function validateFloat($field) {
         if(filter_var($this->source[$field], FILTER_VALIDATE_FLOAT) === false) {
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is an invalid float');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_FLOAT",$field));
         }
     }
     private function validateString($field) {
         if(isset($this->source[$field])) {
             if(!is_string($this->source[$field])) {
-                $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is invalid string');
+                $this->setStatus(500, $this->translate("FIELD_INVALID_STRING",$field));
                 $this->sanitizeString($field);
             }
         }
@@ -231,7 +253,7 @@ class EasyValidation {
     private function alphaNumeric($field,$min=0,$max=0) {
         if(isset($this->source[$field])) {
             if(preg_match("/[^a-z_\.\-0-9\s]/i", $this->source[$field] ) == true) {
-                $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is invalid string');
+                $this->setStatus(500, $this->translate("FIELD_INVALID_ALPHA_NUMERIC",$field));
                 $this->sanitizeString($field);
             }
         }
@@ -240,7 +262,7 @@ class EasyValidation {
     private function alpha($field,$min=0,$max=0) {
         if(isset($this->source[$field])) {
             if(preg_match("/[^a-z\s]/i", $this->source[$field] ) == true) {
-                $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is invalid.');
+                $this->setStatus(500, $this->translate("FIELD_INVALID_ALPHA",$field));
                 $this->sanitizeString($field);
             }
         }
@@ -248,32 +270,32 @@ class EasyValidation {
     private function alphaNumericUnicode($field,$min=0,$max=0) {
         if(isset($this->source[$field])) {
             if(preg_match("[^a-z_\.\-0-9\x{4e00}-\x{9fa5}]/ui", $this->source[$field] ) == true) {
-                $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is invalid string');
+                $this->setStatus(500, $this->translate("FIELD_INVALID_ALPHA_NUMERIC_UNICODE",$field));
                 $this->sanitizeString($field);
             }
         }
     }
     private function validateNumeric($field, $min=0, $max=0) {
         if(preg_match("/[^0-9]+/",$this->source[$field])) {
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is an invalid number');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_NUMERIC",$field));
             $this->sanitizeNumeric($field);
         }
     }
     private function validateUrl($field) {
         if(filter_var($this->source[$field], FILTER_VALIDATE_URL) === FALSE) {
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is not a valid URL');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_URL",$field));
             $this->sanitizeUrl($field);
         }
     }
     private function validateEmail($field) {
         if(filter_var($this->source[$field], FILTER_VALIDATE_EMAIL) === FALSE) {
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is not a valid email address');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_EMAIL",$field));
             $this->sanitizeEmail($field);
         }
     }
     private function validateBool($field) {
         filter_var($this->source[$field], FILTER_VALIDATE_BOOLEAN);{
-            $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' is Invalid');
+            $this->setStatus(500, $this->translate("FIELD_INVALID_BOOLEAN",$field));
         }
     }
     private  function isUnique($field,$table,$column){
@@ -281,10 +303,10 @@ class EasyValidation {
             if($this->isConnected){
                 $query = mysqli_query($this->dbConn, "SELECT * FROM `$table` WHERE `$column`='".$this->sanitizeField($field)."'");
                 if(mysqli_num_rows($query) > 0){
-                    $this->setStatus(500,str_replace("_"," ",ucfirst($field)) . ' already exists');
+                    $this->setStatus(500, $this->translate("FIELD_VALUE_ALREADY_EXISTS",$field));
                 }
             } else {
-                    $this->setStatus(500,' Database not connected. Database related rules will be unavailable.');
+                $this->setStatus(500, $this->translate("DB_NOT_CONNECTED",$field));
             }
         }
     }
