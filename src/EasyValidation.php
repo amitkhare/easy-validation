@@ -66,14 +66,14 @@ class EasyValidation {
         $mysqli = new \mysqli($host,$username,$password,$dbname);
         /* check connection */
         if (mysqli_connect_errno()) {
-            $this->setStatus(500,sprintf("Database Error: %s.", mysqli_connect_error()));
+            $this->setStatus(500, $this->translate("DB_ERROR",mysqli_connect_error()));
             $this->isConnected=false;
         } else {
             $this->dbConn = $mysqli;
             $this->isConnected=true;
         }
     }
-	private function translate($keyString,$fields=null){
+	private function translate($keyString,$fields=null) {
 	    return Translator::translate($keyString,$fields,$this->locale,$this->localePath);
 	}
     public function match($field1="",$field2="",$rules=[]){
@@ -88,7 +88,6 @@ class EasyValidation {
         }
         
         if($this->source[$field1] != $this->source[$field2]){
-            $string = "The `%s` field doesn't match with `%s`.";
             $status = $this->translate("FIELDS_DONT_MATCH",[$field1,$field2]);
             $this->setStatus(500,$status);
         }
