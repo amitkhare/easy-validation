@@ -64,3 +64,6 @@ if(!$v->isValid()){
     > alphanum
     > alphanumUnicode
     > unique (avaiable only if instantiate EasyValidation With Database Details);
+## TODO:
+    > Support for multiple locales
+    > Support for single field check like setField() in addition with setSource()
