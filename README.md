@@ -16,7 +16,7 @@ Run this command from the directory in which you want to install.
 ### Manual Install:
 
     Download: https://github.com/amitkhare/easy-validation/archive/master.zip
-    Extract it, require "PATH-TO/"."validbit.php" where you want to use it.
+    Extract it, require "PATH-TO/"."EasyValidation.php" where you want to use it.
 
 ## Usage:
 ```sh
