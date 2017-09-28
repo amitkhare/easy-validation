@@ -53,6 +53,8 @@ $v = new EasyValidation($host,$username,$password,$dbname); // instantiate EasyV
 
 $v->setSource($_POST); // set data source array;
 
+
+// check bottom of this file for sample en-IN.lang file
 $v->setLocale("en-IN","PATH/TO/LOCALES/DIRECTORY/"); 
     
 $v->check("mobile","required|numeric|min:10|max:15");
@@ -88,6 +90,26 @@ if(!$v->isValid()){
     > alphanum
     > alphanumUnicode
     > unique (avaiable only if instantiate EasyValidation With Database Details);
+
+## Sample en-IN.lang file  [[ JSON FORMAT ]]
+```sh
+    {
+
+    "FIELDS_DONT_MATCH" : "The `%s` dont match with `%s`.",
+    "FIELD_REQUIRED" : "The `%s` is required.",
+    "FIELD_NOT_SET" : "The `%s` field is not set.",
+
+    "USERNAME":"Username",
+    "FIRSTNAME":"First Name",
+    "LASTNAME":"Last Name",
+    "MIDDLENAME":"Middle Name",
+    "EMAIL":"Email",
+    "PASSWORD":"Password",
+    "MOBILE":"Mobile",
+    "PASSWORD_CONFIRM":"Password Confirm"
+
+    }
+```
+
 ## TODO:
-    > Support for multiple locales : DONE
     > Support for single field check like setField() in addition with setSource()
