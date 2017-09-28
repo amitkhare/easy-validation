@@ -52,9 +52,11 @@ class EasyValidation {
 	
 	public function setLocale($locale,$localePath=null){
         $this->locale = $locale;
-        if($localePath){
+        EasyTranslator::setLocale($locale);
+	    if($localePath){
             $this->localePath = $localePath;
-        }
+            EasyTranslator::setLocalePath($localePath);
+	    }
     }
     
     public function setSource($source){
