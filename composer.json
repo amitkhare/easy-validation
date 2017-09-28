@@ -19,6 +19,6 @@
     
     "require": {
         "php": ">=5.5.0",
-        "amitkhare/easy-translator": "dev-master"
+        "amitkhare/easy-translator": "^0"
     }
 }
