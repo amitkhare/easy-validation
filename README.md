@@ -18,6 +18,27 @@ Run this command from the directory in which you want to install.
     Download: https://github.com/amitkhare/easy-validation/archive/master.zip
     Extract it, require "PATH-TO/"."EasyValidation.php" where you want to use it.
 
+## Minimal Usage:
+```sh
+<?php
+
+require("PATH-TO/"."EasyValidation.php"); // only need to include if installed manually.
+
+$v = new AmitKhare\EasyValidation\EasyValidation(); // instantiate EasyValidation;
+
+$v->setSource($_POST); // set data source array;
+
+$v->setLocale("en-IN","PATH/TO/LOCALES/DIRECTORY/"); 
+    
+$v->check("email","required|email|unique:users.email|min:4|max:100");
+$v->match("password","password_confirm","required|min:6|max:25");
+
+if(!$v->isValid()){
+    print_r($v->getStatus());
+}
+
+```
+
 ## Usage:
 ```sh
 <?php
