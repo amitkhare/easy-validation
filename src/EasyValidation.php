@@ -152,6 +152,7 @@ class EasyValidation {
 	}
     // /min\:[0-9]+/
 	private function  _fetchRule($field,$rule){
+		$rule = strtolower($rule);
 		switch($rule){
                 case ( preg_match("/(unique\:)/", $rule ) == true):
                     $this->isUnique($field,$this->uniqueArray[$field]['table'],$this->uniqueArray[$field]['column']);
@@ -176,9 +177,6 @@ class EasyValidation {
                     break;
                 case 'alphanum':
                     $this->alphaNumeric($field);
-                    break;
-                case 'alphanumUnicode':
-                    $this->alphaNumericUnicode($field);
                     break;
                 case 'alphanumunicode':
                     $this->alphaNumericUnicode($field);
