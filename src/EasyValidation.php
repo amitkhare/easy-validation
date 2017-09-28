@@ -24,7 +24,7 @@
  * @author Amit Kumar Khare <me.amitkhare@gmail.com>
  */
  
-use AmitKhare\Translator;
+use AmitKhare\EasyTranslator;
 
 class EasyValidation {
 	private $code;
@@ -39,8 +39,8 @@ class EasyValidation {
 	
 	function __construct($host=null,$username=null,$password=null,$dbname=null){
 	    
-	    Translator::setLocalePath($this->localePath);
-	    Translator::setLocale($this->locale);
+	    EasyTranslator::setLocalePath($this->localePath);
+	    EasyTranslator::setLocale($this->locale);
 	    
 		$this->msgs = false;
 		$this->code = 200;
@@ -83,7 +83,7 @@ class EasyValidation {
     }
     
 	private function translate($keyString,$fields=null) {
-	    return Translator::translate($keyString,$fields);
+	    return EasyTranslator::translate($keyString,$fields);
 	}
 	
     public function match($field1="",$field2="",$rules=[]){
