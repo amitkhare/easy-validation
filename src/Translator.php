@@ -28,43 +28,64 @@
 class Translator {
     private static $localePath = __DIR__."/locales/";
     private static $locale = "en-IN";
-    public static function translate($keyString,$fields=null,$locale=null,$localePath=null){
+    
+    public static function setLocale($locale){
         
-        if($localePath){
-            self::$localePath = $localePath;
+        if(count($locale = explode("-",$locale)) == 2){
+    		$locale = strtolower($locale[0])."-".strtoupper($locale[1]);
+    	} else {
+    		$locale = "en-IN";
+    	}
+    	
+        self::$locale = $locale;
+    }
+    
+    public static function setLocalePath($localePath){
+        
+        if(file_exists($localePath)) {
+    
+        	self::$localePath = realpath($localePath);
+        	
         }
-        
-        if($locale){
-            self::$locale = $locale;
-        }
-        
-        $string = self::getString(strtoupper($keyString));
-        
-        if($fields==null){
-            return $string;
-        }
-        
-        if(is_array($fields)){
-            foreach ($fields as $key=>$field) {
-                $fields[$key] = self::formatField($field);
-            }
-        } else {
-            $fields = [self::formatField($fields)];
-        }
-        
-        return vsprintf($string, $fields);
         
     }
     
+    public static function translate($keyString,$replacements=null,$locale=null){
+        
+        if($locale){
+            self::setLocale($locale);
+        }
+        
+        $string = self::getString($keyString);
+        
+        if($replacements==null){
+            return $string;
+        }
+        
+        if(is_array($replacements)){
+            foreach ($replacements as $key=>$replacement) {
+                $replacements[$key] = self::formatReplacement($replacement);
+            }
+        } else {
+            $replacements = [self::formatReplacement($replacements)];
+        }
+        
+        return vsprintf($string, $replacements);
+        
+    }
+    
+    
     private static function getString($keyString){
         
-        if(!$val = self::getVal(self::$localePath.self::$locale.".lang",$keyString)){
+        $keyString = strtoupper($keyString);
+        
+        if(!$val = self::fetchVal(self::$localePath.self::$locale.".lang",$keyString)){
 
             // search locale in internal directory
-            if(!$val = self::getVal(__DIR__."/locales/".self::$locale.".lang",$keyString)){
+            if(!$val = self::fetchVal(__DIR__."/locales/".self::$locale.".lang",$keyString)){
                 
                 // search default locale in internal directory
-                if(!$val = self::getVal(__DIR__."/locales/en-IN.lang",$keyString)){
+                if(!$val = self::fetchVal(__DIR__."/locales/en-IN.lang",$keyString)){
                     
                     // noting found return formatted keystring
                     return self::formatString($keyString);
@@ -79,7 +100,7 @@ class Translator {
 
     }
     
-    private static function getVal($file,$keyString){
+    private static function fetchVal($file,$keyString){
         if(file_exists($file)){
            
            $file = file_get_contents($file);
@@ -99,9 +120,8 @@ class Translator {
         return $string;
     }
     
-    private static function formatField($field) {
-        $field = strtoupper($field);
-        return self::getString($field);
+    private static function formatReplacement($replacement) {
+        return self::getString($replacement);
     }
      
 }

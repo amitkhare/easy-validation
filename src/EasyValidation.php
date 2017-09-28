@@ -34,14 +34,20 @@ class EasyValidation {
     private $uniqueArray;
     private $dbConn;
     private $isConnected=false;
-    private $locale = "en-IN";
-	private $localePath = __DIR__."/locales/";
-	function __construct($host=false,$username=false,$password=false,$dbname=false){
+    private $localePath = __DIR__."/locales/";
+	private $locale = "hi-IN";
+	
+	function __construct($host=null,$username=null,$password=null,$dbname=null){
+	    
+	    Translator::setLocalePath($this->localePath);
+	    Translator::setLocale($this->locale);
+	    
 		$this->msgs = false;
 		$this->code = 200;
-        if($host!==false && $username!==false && $password!==false && $dbname!==false){
+        if($host!==null && $username!==null && $password!==null && $dbname!==null){
             $this->connect($host,$username,$password,$dbname);
         }
+        
 	}
 	
 	public function setLocale($locale,$localePath=null){
@@ -54,6 +60,7 @@ class EasyValidation {
     public function setSource($source){
         $this->source = $source;
     }
+    
     private function sanitizeField($field){
         if($this->isConnected){
             $safeField = $this->dbConn->real_escape_string(trim(strip_tags($this->source[$field])));
@@ -62,7 +69,8 @@ class EasyValidation {
         }
         return $safeField;
     }
-    private function connect($host="localhost",$username="root",$password="",$dbname="slimtestdb"){
+    
+    private function connect($host="localhost",$username="root",$password="",$dbname="EasyValidationDB"){
         $mysqli = new \mysqli($host,$username,$password,$dbname);
         /* check connection */
         if (mysqli_connect_errno()) {
@@ -73,9 +81,11 @@ class EasyValidation {
             $this->isConnected=true;
         }
     }
+    
 	private function translate($keyString,$fields=null) {
-	    return Translator::translate($keyString,$fields,$this->locale,$this->localePath);
+	    return Translator::translate($keyString,$fields);
 	}
+	
     public function match($field1="",$field2="",$rules=[]){
         
         if($rules){

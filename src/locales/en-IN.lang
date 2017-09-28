@@ -17,6 +17,15 @@
 "FIELD_VALUE_ALREADY_EXISTS" : "The `%s` field value already exists in database.",
 "DB_NOT_CONNECTED" : "Database not connected. Database related rules will be unavailable. Can not apply `unique.%s` rule.",
 "FIELD_VALUE_TOO_LONG" : "The `%s` field value is too long, it should not more than `%s` characters.",
-"FIELD_VALUE_TOO_SHORT" : "The `%s` field value is too short, it should be at least `%s` characters long."
+"FIELD_VALUE_TOO_SHORT" : "The `%s` field value is too short, it should be at least `%s` characters long.",
+
+"USERNAME":"Username",
+"FIRSTNAME":"First Name",
+"LASTNAME":"Last Name",
+"MIDDLENAME":"Middle Name",
+"EMAIL":"Email",
+"PASSWORD":"Password",
+"MOBILE":"Mobile",
+"PASSWORD_CONFIRM":"Password Confirm"
 
 }
