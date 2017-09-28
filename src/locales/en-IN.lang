@@ -20,6 +20,8 @@
 "FIELD_VALUE_TOO_SHORT" : "The `%s` field value is too short, it should be at least `%s` characters long.",
 
 "USERNAME":"Username",
+"IDENTIFIER": "Username/ Email",
+"GENDER": "Gender",
 "FIRSTNAME":"First Name",
 "LASTNAME":"Last Name",
 "MIDDLENAME":"Middle Name",

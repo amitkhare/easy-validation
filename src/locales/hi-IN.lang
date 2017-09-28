@@ -20,6 +20,8 @@
 "FIELD_VALUE_TOO_SHORT" : "`%s` फील्ड की वैल्यू बहुत कम है, इसे कम से कम `%s` अक्षर का होना चाहिए.",
 
 "USERNAME":"यूजरनेम",
+"IDENTIFIER": "यूजरनेम/ईमेल",
+"GENDER": "जेंडर",
 "FIRSTNAME":"प्रथम नाम",
 "LASTNAME":"उप नाम",
 "MIDDLENAME":"मध्य नाम",
