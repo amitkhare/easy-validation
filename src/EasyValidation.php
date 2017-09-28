@@ -180,6 +180,9 @@ class EasyValidation {
                 case 'alphanumUnicode':
                     $this->alphaNumericUnicode($field);
                     break;
+                case 'alphanumunicode':
+                    $this->alphaNumericUnicode($field);
+                    break;
                 case 'float':
                     $this->validateFloat($field);
                     break;
